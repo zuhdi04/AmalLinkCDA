@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import type { Program } from '../types/program';
 import { fetchActivePrograms, formatBudget, formatEventDate } from '../services/programService';
 import { RegistrationModal } from '../components/RegistrationModal';
@@ -14,164 +13,63 @@ export function ProgramsPage() {
     setLoading(true);
     setError(null);
     fetchActivePrograms()
-      .then((data) => {
-        setPrograms(data);
-      })
-      .catch((err) => {
-        setError(
-          err instanceof Error
-            ? err.message
-            : 'Unable to load programs from Firebase. Please check your network and try again.'
-        );
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      .then(setPrograms)
+      .catch((err) => setError(err instanceof Error ? err.message : 'Unable to load programs. Please check your network and try again.'))
+      .finally(() => setLoading(false));
   }
 
-  useEffect(() => {
-    loadPrograms();
-  }, []);
+  useEffect(() => { loadPrograms(); }, []);
 
   return (
-    <main className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <nav className="mb-8" aria-label="Breadcrumb">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-900 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded-md py-2 px-2 min-h-[44px]"
-          >
-            <span aria-hidden="true">&larr;</span> Back to Home
-          </Link>
-        </nav>
+    <div className="mx-auto w-full max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
+      <header className="max-w-3xl border-b border-beige-dark pb-8">
+        <h1 className="text-4xl font-extrabold tracking-tight text-burgundy-dark sm:text-5xl">Programs open for participation</h1>
+        <p className="mt-4 text-lg leading-8 text-muted">Review community initiatives, workshops, and opportunities, then register for the program that interests you.</p>
+      </header>
 
-        <header className="mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-            Our Programs
-          </h1>
-          <p className="mt-3 text-lg text-slate-600">
-            Dedicated community initiatives, educational workshops, and collaborative opportunities open for participation.
-          </p>
-        </header>
-
-        {/* Loading State */}
+      <div className="mt-8">
         {loading && (
-          <div
-            aria-live="polite"
-            className="py-16 text-center rounded-xl border border-slate-200 bg-slate-50 p-8"
-          >
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em]" role="status">
-              <span className="sr-only">Loading programs...</span>
-            </div>
-            <p className="mt-4 text-sm font-medium text-slate-600">
-              Retrieving active programs from Firebase...
-            </p>
+          <div aria-live="polite" className="rounded-panel border border-beige-dark bg-cream px-6 py-14 text-center">
+            <div className="mx-auto h-8 w-8 animate-spin rounded-full border-[3px] border-burgundy border-r-transparent" role="status"><span className="sr-only">Loading programs...</span></div>
+            <p className="mt-4 font-medium text-muted">Retrieving open programs...</p>
           </div>
         )}
 
-        {/* Error State */}
         {!loading && error && (
-          <div
-            role="alert"
-            className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-900"
-          >
-            <h2 className="text-lg font-bold text-red-800">Unable to display programs</h2>
-            <p className="mt-2 text-sm text-red-700">{error}</p>
-            <div className="mt-4">
-              <button
-                type="button"
-                onClick={loadPrograms}
-                className="inline-flex items-center px-4 py-2 min-h-[44px] rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
-              >
-                Retry loading
-              </button>
-            </div>
+          <div role="alert" className="rounded-panel border border-burgundy/30 bg-burgundy-light p-6 sm:p-8">
+            <h2 className="text-xl font-bold text-burgundy-dark">Unable to display programs</h2>
+            <p className="mt-2 break-words text-burgundy-dark">{error}</p>
+            <button type="button" onClick={loadPrograms} className="mt-5 min-h-11 rounded-lg bg-burgundy px-5 py-2 font-semibold text-white hover:bg-burgundy-dark">Retry loading</button>
           </div>
         )}
 
-        {/* Empty State */}
         {!loading && !error && programs.length === 0 && (
-          <div className="py-16 text-center rounded-xl border border-slate-200 bg-slate-50 p-8">
-            <h2 className="text-xl font-bold text-slate-800">No Active Programs Right Now</h2>
-            <p className="mt-2 text-slate-600 max-w-md mx-auto text-sm">
-              There are currently no active programs open for registration. Once programs are activated in the management console, they will appear here.
-            </p>
-            <div className="mt-6">
-              <button
-                type="button"
-                onClick={loadPrograms}
-                className="inline-flex items-center px-4 py-2 min-h-[44px] rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-white focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-600"
-              >
-                Refresh list
-              </button>
-            </div>
+          <div className="rounded-panel border border-beige-dark bg-cream px-6 py-14 text-center">
+            <h2 className="text-xl font-bold text-burgundy-dark">No active programs right now</h2>
+            <p className="mx-auto mt-3 max-w-lg text-muted">There are currently no programs open for registration. New opportunities will appear here when they become available.</p>
+            <button type="button" onClick={loadPrograms} className="mt-6 min-h-11 rounded-lg border border-burgundy px-5 py-2 font-semibold text-burgundy hover:bg-burgundy-light">Refresh list</button>
           </div>
         )}
 
-        {/* Programs List */}
         {!loading && !error && programs.length > 0 && (
-          <section aria-label="Available programs" className="space-y-6">
+          <section aria-label="Available programs" className="space-y-5">
             {programs.map((program) => {
               const formattedDate = formatEventDate(program.eventDate);
               const formattedBudget = formatBudget(program.targetBudget);
-
               return (
-                <article
-                  key={program.id}
-                  className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs transition hover:border-slate-300"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
-                    <div className="space-y-3 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
-                          Registration Open
-                        </span>
-                        {formattedBudget && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
-                            Budget: {formattedBudget}
-                          </span>
-                        )}
-                      </div>
-
-                      <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-                        {program.title}
-                      </h2>
-
-                      {/* Project Meta Information */}
-                      <dl className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-600 pt-1">
-                        {formattedDate && (
-                          <div>
-                            <dt className="font-semibold text-slate-700 inline">Date: </dt>
-                            <dd className="inline">{formattedDate}</dd>
-                          </div>
-                        )}
-                        {program.venueName && (
-                          <div>
-                            <dt className="font-semibold text-slate-700 inline">Venue: </dt>
-                            <dd className="inline">
-                              {program.venueName}
-                              {program.venueAddress ? ` (${program.venueAddress})` : ''}
-                            </dd>
-                          </div>
-                        )}
+                <article key={program.id} className="min-w-0 rounded-panel border border-beige-dark bg-cream p-6 transition-colors hover:border-burgundy/50 sm:p-7">
+                  <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-brand-green">Registration open</p>
+                      <h2 className="mt-2 break-words text-2xl font-bold tracking-tight text-burgundy-dark">{program.title}</h2>
+                      <dl className="mt-5 grid grid-cols-1 gap-x-6 gap-y-3 text-sm text-muted sm:grid-cols-2">
+                        {formattedDate && <div><dt className="font-semibold text-ink">Date</dt><dd className="mt-1 break-words">{formattedDate}</dd></div>}
+                        {program.venueName && <div><dt className="font-semibold text-ink">Venue</dt><dd className="mt-1 break-words">{program.venueName}{program.venueAddress ? `, ${program.venueAddress}` : ''}</dd></div>}
+                        {formattedBudget && <div><dt className="font-semibold text-ink">Target budget</dt><dd className="mt-1 break-words">{formattedBudget}</dd></div>}
                       </dl>
-
-                      {program.notes && (
-                        <p className="text-slate-600 text-sm whitespace-pre-line pt-1 border-t border-slate-100">
-                          {program.notes}
-                        </p>
-                      )}
+                      {program.notes && <div className="mt-5 border-t border-beige-dark pt-4"><h3 className="text-sm font-semibold text-ink">Program notes</h3><p className="mt-1 whitespace-pre-line break-words text-sm leading-6 text-muted">{program.notes}</p></div>}
                     </div>
-
-                    <div className="sm:self-center shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedProgram(program)}
-                        className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 min-h-[44px] rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
-                      >
-                        Register for Program
-                      </button>
-                    </div>
+                    <button type="button" onClick={() => setSelectedProgram(program)} className="min-h-11 shrink-0 rounded-lg bg-burgundy px-5 py-2.5 font-semibold text-white transition-colors hover:bg-burgundy-dark active:bg-burgundy-dark sm:self-center">Register</button>
                   </div>
                 </article>
               );
@@ -180,12 +78,7 @@ export function ProgramsPage() {
         )}
       </div>
 
-      {/* Registration Modal Dialog */}
-      <RegistrationModal
-        program={selectedProgram}
-        isOpen={selectedProgram !== null}
-        onClose={() => setSelectedProgram(null)}
-      />
-    </main>
+      <RegistrationModal program={selectedProgram} isOpen={selectedProgram !== null} onClose={() => setSelectedProgram(null)} />
+    </div>
   );
 }

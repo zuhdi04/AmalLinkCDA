@@ -7,33 +7,15 @@ interface CtaCardProps {
 
 export function CtaCard({ item }: CtaCardProps) {
   return (
-    <article className="h-full">
-      <Link
-        to={item.route}
-        className="group relative flex h-full min-h-[340px] sm:min-h-[400px] flex-col justify-end overflow-hidden rounded-2xl p-7 text-left shadow-sm transition duration-300 hover:shadow-xl focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 cursor-pointer border border-slate-200"
-        aria-label={`${item.title}: ${item.actionText}`}
-      >
-        <img
-          src={item.imageUrl}
-          alt={item.imageAlt}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-          loading="lazy"
-        />
-
-        {/* Dark gradient overlay guaranteeing WCAG AA text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20 transition-opacity duration-300 group-hover:from-black/95" />
-
-        <div className="relative z-10 flex flex-col gap-2">
-          <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            {item.title}
-          </h2>
-          <p className="line-clamp-2 text-sm text-slate-200">
-            {item.description}
-          </p>
-          <div className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-white group-hover:underline">
-            <span>{item.actionText}</span>
-            <span aria-hidden="true">&rarr;</span>
-          </div>
+    <article className="h-full overflow-hidden rounded-panel border border-beige-dark bg-cream">
+      <Link to={item.route} className="group flex h-full flex-col" aria-label={`${item.title}: ${item.actionText}`}>
+        <div className="relative aspect-[16/9] overflow-hidden bg-beige">
+          <img src={item.imageUrl} alt={item.imageAlt} width="1000" height="563" loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100" />
+        </div>
+        <div className="flex flex-1 flex-col p-6">
+          <h3 className="text-2xl font-bold tracking-tight text-burgundy-dark">{item.title}</h3>
+          <p className="mt-2 leading-6 text-muted">{item.description}</p>
+          <span className="mt-5 inline-flex min-h-11 items-center font-semibold text-burgundy group-hover:underline">{item.actionText}</span>
         </div>
       </Link>
     </article>

@@ -1,57 +1,17 @@
 import { Link } from 'react-router-dom';
 
 export function NewsPage() {
-  const sampleNews = [
-    {
-      id: 1,
-      title: 'Spring 2026 Community Cohort Announced',
-      date: 'November 2026',
-      summary: 'Applications are now open for the upcoming cohort focusing on local technology education.',
-    },
-    {
-      id: 2,
-      title: 'Partnering for Expanded Educational Access',
-      date: 'October 2026',
-      summary: 'New resources and facilities will be available across neighborhood centers starting this winter.',
-    },
-  ];
-
   return (
-    <main className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <nav className="mb-8" aria-label="Breadcrumb">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-800 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded-md py-1 px-2"
-          >
-            <span aria-hidden="true">&larr;</span> Back to Home
-          </Link>
-        </nav>
-
-        <header className="mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-            Latest News
-          </h1>
-          <p className="mt-3 text-lg text-slate-600">
-            Updates, stories, and milestones from our community initiatives.
-          </p>
-        </header>
-
-        <section aria-label="News articles" className="space-y-6">
-          {sampleNews.map((item) => (
-            <article
-              key={item.id}
-              className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs transition hover:border-slate-300"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <h2 className="text-xl font-bold text-slate-900">{item.title}</h2>
-                <time className="text-xs font-medium text-slate-500 whitespace-nowrap">{item.date}</time>
-              </div>
-              <p className="mt-2 text-slate-600">{item.summary}</p>
-            </article>
-          ))}
-        </section>
-      </div>
-    </main>
+    <div className="mx-auto w-full max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
+      <header className="max-w-3xl border-b border-beige-dark pb-8">
+        <h1 className="text-4xl font-extrabold tracking-tight text-burgundy-dark sm:text-5xl">Community news</h1>
+        <p className="mt-4 text-lg leading-8 text-muted">Updates and announcements from AmalLink CDA community initiatives.</p>
+      </header>
+      <section aria-label="News updates" className="mt-8 rounded-panel border border-beige-dark bg-cream px-6 py-14 text-center sm:px-10">
+        <h2 className="text-xl font-bold text-burgundy-dark">No news updates are currently published</h2>
+        <p className="mx-auto mt-3 max-w-lg leading-7 text-muted">There are no announcements to show right now. In the meantime, you can browse programs that are open for registration.</p>
+        <Link to="/programs" className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-burgundy px-5 py-2 font-semibold text-white hover:bg-burgundy-dark">Browse programs</Link>
+      </section>
+    </div>
   );
 }
