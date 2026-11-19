@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isActivePic() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/pics/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/pics/$(request.auth.uid)).data.active == true;
+    }
+
+    // Projects: Public can view programs; active PICs have full read/write access.
+    match /projects/{id} {
+      allow read: if true;
+      allow write: if isActivePic();
+    }
+
+    // Questions: Public participants can read custom form questions; PIC admins have full access.
+    match /questions/{id} {
+      allow read: if true;
+      allow write: if isActivePic();
+    }
+
+    // Tasks: Internal volunteer tasks are managed by active PICs.
+    match /tasks/{id} {
+      allow read, write: if isActivePic();
+    }
+
+    // Registrations: Public participants can submit registration with required contact info.
+    // Only active PIC admins may read, update, delete, or export registration records.
+    match /registrations/{id} {
+      allow create: if request.resource.data.projectId is string
+                    && request.resource.data.volunteerEmail is string
+                    && request.resource.data.volunteerName is string
+                    && request.resource.data.phone is string;
+      allow read, update, delete: if isActivePic();
+    }
+
+    // Volunteers: Public registration can sync volunteer contact metadata.
+    // Only active PIC admins can list or delete volunteer directory records.
+    match /volunteers/{id} {
+      allow create, update: if request.resource.data.email is string;
+      allow read, delete: if isActivePic();
+    }
+
+    // PIC accounts: Signed-in users can read profiles and submit an initial inactive account.
+    // An active PIC can activate or update other PIC accounts.
+    match /pics/{uid} {
+      allow read: if isSignedIn();
+
+      // Self-signup: a user may create their own record only, and it must
+      // start inactive so an existing admin can approve it.
+      allow create: if isSignedIn()
+        && uid == request.auth.uid
+        && request.resource.data.active == false
+        && request.resource.data.email == request.auth.token.email;
+
+      // An active PIC may rename or activate/deactivate another account,
+      // but never their own account and never delete.
+      allow update: if isActivePic()
+        && uid != request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'active']);
+
+      allow delete: if false;
+    }
+  }
+}
