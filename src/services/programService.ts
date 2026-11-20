@@ -43,6 +43,7 @@ function mapProjectDoc(id: string, data: Record<string, unknown>): Program {
     status: (data.status as string) || 'Draft',
     targetBudget: typeof data.targetBudget === 'number' ? data.targetBudget : null,
     notes: (data.notes as string) || '',
+    imageDataUrl: (data.imageDataUrl as string) || '',
     createdAt: (data.createdAt as string) || '',
     updatedAt: (data.updatedAt as string) || '',
   };

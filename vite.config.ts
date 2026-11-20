@@ -12,9 +12,9 @@ export default defineConfig({
       registerType: 'prompt',
       includeAssets: ['icons/amallink-logo.svg', 'icons/*.png'],
       manifest: {
-        name: 'AmalLink CDA Community Programs',
-        short_name: 'AmalLink CDA',
-        description: 'Find community programs and register to participate with AmalLink CDA.',
+        name: 'AmalLink Community Programs',
+        short_name: 'AmalLink',
+        description: 'Find community programs and register to participate with AmalLink.',
         theme_color: '#F7F4EE',
         background_color: '#F7F4EE',
         start_url: '/',

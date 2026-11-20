@@ -57,7 +57,12 @@ export function ProgramsPage() {
               const formattedDate = formatEventDate(program.eventDate);
               const formattedBudget = formatBudget(program.targetBudget);
               return (
-                <article key={program.id} className="min-w-0 rounded-panel border border-beige-dark bg-cream p-6 transition-colors hover:border-burgundy/50 sm:p-7">
+                <article key={program.id} className="min-w-0 overflow-hidden rounded-panel border border-beige-dark bg-cream p-6 transition-colors hover:border-burgundy/50 sm:p-7">
+                  {program.imageDataUrl && (
+                    <div className="-mx-6 -mt-6 mb-6 aspect-[16/9] overflow-hidden bg-beige sm:-mx-7 sm:-mt-7">
+                      <img src={program.imageDataUrl} alt={program.title} width="1000" height="563" loading="lazy" className="h-full w-full object-cover" />
+                    </div>
+                  )}
                   <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-semibold text-brand-green">Registration open</p>

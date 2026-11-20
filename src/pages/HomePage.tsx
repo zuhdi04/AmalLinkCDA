@@ -41,21 +41,16 @@ export function HomePage() {
   return (
     <>
       <section className="border-b border-beige-dark bg-cream">
-        <div className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-9 sm:px-8 sm:py-16 lg:grid-cols-[1.35fr_0.65fr] lg:items-end">
-          <div>
-            <h1 className="max-w-3xl text-[clamp(2.25rem,7vw,4.5rem)] font-extrabold leading-[1.04] tracking-[-0.045em] text-burgundy-dark">
-              Community starts with a place to participate.
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
-              Find AmalLink CDA programs that are open for registration and choose the opportunity that fits you.
-            </p>
-            <Link to="/programs" className="mt-8 inline-flex min-h-12 items-center justify-center rounded-xl bg-burgundy px-6 py-3 font-semibold text-white shadow-sm transition-colors hover:bg-burgundy-dark active:bg-burgundy-dark">
-              Browse open programs
-            </Link>
-          </div>
-          <p className="max-w-md border-t-2 border-brand-green pt-5 text-base leading-7 text-muted lg:justify-self-end">
-            Program details, dates, venues, and registration questions are brought together in one clear place.
+        <div className="mx-auto w-full max-w-6xl px-5 py-9 sm:px-8 sm:py-16">
+          <h1 className="max-w-3xl text-[clamp(2.25rem,7vw,4.5rem)] font-extrabold leading-[1.04] tracking-[-0.045em] text-burgundy-dark">
+            Find and join community programs near you.
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
+            AmalLink connects you to community programs and activities that are open for registration. Browse what is available and sign up for the one that fits you.
           </p>
+          <Link to="/programs" className="mt-8 inline-flex min-h-12 items-center justify-center rounded-xl bg-burgundy px-6 py-3 font-semibold text-white shadow-sm transition-colors hover:bg-burgundy-dark active:bg-burgundy-dark">
+            Browse open programs
+          </Link>
         </div>
       </section>
 
@@ -97,7 +92,12 @@ export function HomePage() {
               {activePrograms.map((program) => {
                 const date = formatEventDate(program.eventDate);
                 return (
-                  <article key={program.id} className="flex min-w-0 flex-col rounded-panel border border-beige-dark bg-cream p-6 transition-colors hover:border-burgundy/50">
+                  <article key={program.id} className="flex min-w-0 flex-col overflow-hidden rounded-panel border border-beige-dark bg-cream p-6 transition-colors hover:border-burgundy/50">
+                    {program.imageDataUrl && (
+                      <div className="-mx-6 -mt-6 mb-6 aspect-[16/9] overflow-hidden bg-beige">
+                        <img src={program.imageDataUrl} alt={program.title} width="1000" height="563" loading="lazy" className="h-full w-full object-cover" />
+                      </div>
+                    )}
                     <p className="text-sm font-semibold text-brand-green">Registration open</p>
                     <h3 className="mt-3 break-words text-xl font-bold text-burgundy-dark">{program.title}</h3>
                     <dl className="mt-5 space-y-2 text-sm text-muted">

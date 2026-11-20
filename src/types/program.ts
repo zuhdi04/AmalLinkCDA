@@ -7,6 +7,7 @@ export interface Program {
   status: 'Active' | 'Draft' | 'Completed' | 'Cancelled' | 'Open' | string;
   targetBudget?: number | null;
   notes?: string;
+  imageDataUrl?: string;
   createdAt?: string;
   updatedAt?: string;
 }
